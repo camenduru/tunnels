@@ -27,7 +27,6 @@ def gen_key(path: Union[str, Path]) -> None:
 def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     ssh_name = "id_rsa"
     ssh_path = Path("extensions/sd-webui-tunnels") / ssh_name
-    print(ssh_path)
 
     tmp = None
     if not ssh_path.exists():
