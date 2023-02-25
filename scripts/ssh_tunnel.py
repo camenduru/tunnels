@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Union
+from gradio import strings
 import os
 
 from modules.shared import cmd_opts
@@ -66,11 +67,12 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     else:
         raise RuntimeError(f"Failed to run {host}")
 
-    os.environ['webui_url'] = tunnel_url
-    os.system("sed -i '/import warnings/a from gradio import strings' /content/stable-diffusion-webui/modules/ui.py")
-    os.system(f'sed -i "/from gradio import strings/a strings.en[\\"PUBLIC_SHARE_TRUE\\"] = f\\"WebUI Colab URL: {tunnel_url}\\"" /content/stable-diffusion-webui/modules/ui.py')
     # print(f" * Running on {tunnel_url}")
-
+    os.environ['webui_url'] = tunnel_url
+    # os.system("sed -i '/import warnings/a from gradio import strings' /content/stable-diffusion-webui/modules/ui.py")
+    # os.system(f'sed -i "/from gradio import strings/a strings.en[\\"PUBLIC_SHARE_TRUE\\"] = f\\"WebUI Colab URL: {tunnel_url}\\"" /content/stable-diffusion-webui/modules/ui.py')
+    strings.en["PUBLIC_SHARE_TRUE"] = f"WebUI Colab URL: {tunnel_url.tunnel}"
+    
 
 if cmd_opts.localhostrun:
     print("localhost.run detected, trying to connect...")
