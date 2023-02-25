@@ -68,7 +68,7 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
 
     os.environ['webui_url'] = tunnel_url
     os.system("sed -i '/import warnings/a from gradio import strings' /content/stable-diffusion-webui/modules/ui.py")
-    os.system('sed -i "/from gradio import strings/a strings.en[\\"PUBLIC_SHARE_TRUE\\"] = f\\"WebUI Colab URL: {tunnel_url}\\"" /content/stable-diffusion-webui/modules/ui.py')
+    os.system(f'sed -i "/from gradio import strings/a strings.en[\\"PUBLIC_SHARE_TRUE\\"] = f\\"WebUI Colab URL: {tunnel_url}\\"" /content/stable-diffusion-webui/modules/ui.py')
     # print(f" * Running on {tunnel_url}")
 
 
