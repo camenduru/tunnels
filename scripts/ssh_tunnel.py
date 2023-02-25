@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Union
+import os
 
 from modules.shared import cmd_opts
 
@@ -65,6 +66,7 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     else:
         raise RuntimeError(f"Failed to run {host}")
 
+    os.environ['webui_url'] = tunnel_url
     print(f" * Running on {tunnel_url}")
 
 
