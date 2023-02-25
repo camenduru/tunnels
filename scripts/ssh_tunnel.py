@@ -4,6 +4,7 @@ import shlex
 import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Union
 
 from modules.shared import cmd_opts
 
@@ -13,7 +14,7 @@ localhostrun_pattern = re.compile(r"(?P<url>https?://\S+\.lhr\.life)")
 remotemoe_pattern = re.compile(r"(?P<url>https?://\S+\.remote\.moe)")
 
 
-def gen_key(path: str | Path) -> None:
+def gen_key(path: Union[str, Path]) -> None:
     path = Path(path)
     arg_string = f'ssh-keygen -t rsa -b 4096 -N "" -q -f {path.as_posix()}'
     args = shlex.split(arg_string)
