@@ -11,6 +11,4 @@ if cmd_opts.cloudflared:
     port = cmd_opts.port if cmd_opts.port else 7860
     tunnel_url = try_cloudflare(port=port, verbose=False)
     os.environ['webui_url'] = tunnel_url.tunnel
-    # os.system("sed -i '/import warnings/a from gradio import strings' /content/stable-diffusion-webui/modules/ui.py")
-    # os.system(f'sed -i "/from gradio import strings/a strings.en[\\"PUBLIC_SHARE_TRUE\\"] = f\\"WebUI Colab URL: {tunnel_url.tunnel}\\"" /content/stable-diffusion-webui/modules/ui.py')
     strings.en["PUBLIC_SHARE_TRUE"] = f"WebUI Colab URL: {tunnel_url.tunnel}"
