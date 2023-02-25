@@ -26,7 +26,9 @@ def gen_key(path: Union[str, Path]) -> None:
 
 def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     ssh_name = "id_rsa"
-    ssh_path = os.path.realpath(__file__).parent.parent / ssh_name
+    cwd = os.getcwd()
+    ssh_path = Path(cwd).parent.parent / ssh_name
+    print(ssh_path)
 
     tmp = None
     if not ssh_path.exists():
