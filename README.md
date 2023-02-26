@@ -15,3 +15,7 @@ add `--localhostrun` to commandline options.
 ### [remote.moe](https://github.com/fasmide/remotemoe)
 
 add `--remotemoe` to commandline options.
+
+### [googleusercontent.com](https://colab.research.google.com)
+
+add `--googleusercontent` to commandline options.

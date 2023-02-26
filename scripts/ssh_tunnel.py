@@ -7,6 +7,7 @@ from tempfile import TemporaryDirectory
 from typing import Union
 from gradio import strings
 import os
+from google.colab.output import eval_js
 
 from modules.shared import cmd_opts
 
@@ -72,6 +73,12 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     strings.en["PUBLIC_SHARE_TRUE"] = f"WebUI Colab URL: {tunnel_url}"
 
 
+def googleusercontent_tunnel():
+    tunnel_url = eval_js("google.colab.kernel.proxyPort(7860)")
+    os.environ['webui_url'] = tunnel_url
+    strings.en["PUBLIC_SHARE_TRUE"] = f"WebUI Colab URL: {tunnel_url}"
+
+
 if cmd_opts.localhostrun:
     print("localhost.run detected, trying to connect...")
     ssh_tunnel(LOCALHOST_RUN)
@@ -79,3 +86,7 @@ if cmd_opts.localhostrun:
 if cmd_opts.remotemoe:
     print("remote.moe detected, trying to connect...")
     ssh_tunnel(REMOTE_MOE)
+
+if cmd_opts.googleusercontent:
+    print("googleusercontent.com detected, trying to connect...")
+    googleusercontent_tunnel()
