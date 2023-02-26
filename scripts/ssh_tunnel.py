@@ -7,7 +7,6 @@ from tempfile import TemporaryDirectory
 from typing import Union
 from gradio import strings
 import os
-from google.colab.output import eval_js
 
 from modules.shared import cmd_opts
 
@@ -74,8 +73,7 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
 
 
 def googleusercontent_tunnel():
-    tunnel_url = eval_js("google.colab.kernel.proxyPort(7860)")
-    os.environ['webui_url'] = tunnel_url
+    tunnel_url = os.getenv('webui_url')
     strings.en["PUBLIC_SHARE_TRUE"] = f"WebUI Colab URL: {tunnel_url}"
 
 
