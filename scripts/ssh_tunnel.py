@@ -70,12 +70,12 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     # print(f" * Running on {tunnel_url}")
     os.environ['webui_url'] = tunnel_url
     colab_url = os.getenv('colab_url')
-    strings.en["SHARE_LINK_MESSAGE"] = f"Public WebUI Colab URL: {tunnel_url}\nPrivate WebUI Colab URL:{colab_url}"
+    strings.en["PUBLIC_SHARE_TRUE"] = f"Public WebUI Colab URL: {tunnel_url}\nPrivate WebUI Colab URL:{colab_url}"
 
 
 def googleusercontent_tunnel():
     colab_url = os.getenv('colab_url')
-    strings.en["SHARE_LINK_MESSAGE"] = f"WebUI Colab URL: {colab_url}"
+    strings.en["PUBLIC_SHARE_TRUE"] = f"WebUI Colab URL: {colab_url}"
 
 
 if cmd_opts.localhostrun:
