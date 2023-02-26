@@ -73,8 +73,8 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
 
 
 def googleusercontent_tunnel():
-    tunnel_url = os.getenv('webui_url')
-    strings.en["PUBLIC_SHARE_TRUE"] = f"WebUI Colab URL: {tunnel_url}"
+    colab_url = os.getenv('colab_url')
+    strings.en["PUBLIC_SHARE_TRUE"] = f"WebUI Colab URL: {colab_url}"
 
 
 if cmd_opts.localhostrun:
