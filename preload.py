@@ -19,3 +19,9 @@ def preload(parser: argparse.ArgumentParser):
         action="store_true",
         help="use remote.moe, alternative to gradio --share",
     )
+
+    parser.add_argument(
+        "--googleusercontent",
+        action="store_true",
+        help="use googleusercontent.com, alternative to gradio --share",
+    )
