@@ -6,6 +6,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Union
 from gradio import strings
+from gradio import blocks
 import os
 
 from modules.shared import cmd_opts
@@ -71,7 +72,8 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     os.environ['webui_url'] = tunnel_url
     colab_url = os.getenv('colab_url')
     if cmd_opts.multiple:
-        strings.en["SHARE_LINK_DISPLAY"] = f"Public WebUI Colab URL: {tunnel_url}"
+        strings.en["RUNNING_LOCALLY"] = f"Public WebUI Colab remote.moe URL: {tunnel_url}"
+        strings.en["SHARE_LINK_DISPLAY"] = f"Public WebUI Colab gradio URL: {blocks.share_url}"
     else:
         strings.en["SHARE_LINK_MESSAGE"] = f"Public WebUI Colab URL: {tunnel_url}"
 
