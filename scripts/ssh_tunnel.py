@@ -6,7 +6,6 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Union
 from gradio import strings
-# from gradio import blocks
 import os
 
 from modules.shared import cmd_opts
@@ -73,7 +72,6 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     colab_url = os.getenv('colab_url')
     if cmd_opts.multiple:
         strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab remote.moe URL: {tunnel_url}"
-        # strings.en["SHARE_LINK_DISPLAY"] = f"Public WebUI Colab gradio URL: {blocks.self.share_url}"
         strings.en["SHARE_LINK_DISPLAY"] = "Please do not use this link we are getting ERROR: Exception in ASGI application:  {}"
     else:
         strings.en["SHARE_LINK_MESSAGE"] = f"Public WebUI Colab URL: {tunnel_url}"
