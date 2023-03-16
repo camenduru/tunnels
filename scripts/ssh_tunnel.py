@@ -74,6 +74,7 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     if cmd_opts.multiple:
         strings.en["SHARE_LINK_DISPLAY"] = f"Public WebUI Colab remote.moe URL: {tunnel_url}"
         strings.en["RUNNING_LOCALLY"] = f"Public WebUI Colab gradio URL: {tunnel_url}"
+        strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab gradio URL: {tunnel_url}"
     else:
         strings.en["SHARE_LINK_MESSAGE"] = f"Public WebUI Colab URL: {tunnel_url}"
 
