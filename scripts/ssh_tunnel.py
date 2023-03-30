@@ -11,6 +11,12 @@ import os, requests, stat
 from modules.shared import cmd_opts
 
 #https://github.com/gradio-app/gradio/blob/main/gradio/tunneling.py modified
+def kill(self):
+    if self.proc is not None:
+        print(f"Killing tunnel 127.0.0.1:7860")
+        self.proc.terminate()
+        self.proc = None
+        
 def gradio_tunnel():
     binary_path = "/content/frpc_linux_amd64"
     response = requests.get("https://api.gradio.app/v2/tunnel-request")
