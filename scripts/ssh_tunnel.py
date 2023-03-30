@@ -94,4 +94,4 @@ if cmd_opts.googleusercontent:
 
 if cmd_opts.multiple:
     print("all detected, remote.moe trying to connect...")
-    ssh_tunnel(REMOTE_MOE)
+    ssh_tunnel(LOCALHOST_RUN)
