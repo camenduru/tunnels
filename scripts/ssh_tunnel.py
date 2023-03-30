@@ -6,7 +6,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Union
 from gradio import strings
-import os
+import os, requests
 
 from modules.shared import cmd_opts
 
