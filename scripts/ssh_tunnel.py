@@ -10,7 +10,7 @@ import os, requests, stat
 
 from modules.shared import cmd_opts
 
-#https://github.com/gradio-app/gradio/blob/main/gradio/tunneling.py modified 
+#https://github.com/gradio-app/gradio/blob/main/gradio/tunneling.py modified
 def gradio_tunnel():
     binary_path = "/content/frpc_linux_amd64"
     response = requests.get("https://api.gradio.app/v2/tunnel-request")
@@ -19,10 +19,10 @@ def gradio_tunnel():
             payload = response.json()[0]
             remote_host, remote_port = payload["host"], int(payload["port"])
             resp = requests.get("https://cdn-media.huggingface.co/frpc-gradio-0.1/frpc_linux_amd64")
-            with open("binary_path", "wb") as file:
+            with open(binary_path, "wb") as file:
                 file.write(resp.content)
-            st = os.stat("binary_path")
-            os.chmod("binary_path", st.st_mode | stat.S_IEXEC)
+            st = os.stat(binary_path)
+            os.chmod(binary_path, st.st_mode | stat.S_IEXEC)
             command = [binary_path,"http","-n","random","-l","7860","-i","127.0.0.1","--uc","--sd","random","--ue","--server_addr",f"{remote_host}:{remote_port}","--disable_log_color",]
             proc = subprocess.Popen(
                 command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
