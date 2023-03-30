@@ -23,7 +23,7 @@ def gradio_tunnel():
                 file.write(resp.content)
             st = os.stat("binary_path")
             os.chmod("binary_path", st.st_mode | stat.S_IEXEC)
-            command = [binary,"http","-n","random","-l","7860","-i","127.0.0.1","--uc","--sd","random","--ue","--server_addr",f"{remote_host}:{remote_port}","--disable_log_color",]
+            command = [binary_path,"http","-n","random","-l","7860","-i","127.0.0.1","--uc","--sd","random","--ue","--server_addr",f"{remote_host}:{remote_port}","--disable_log_color",]
             proc = subprocess.Popen(
                 command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
             )
