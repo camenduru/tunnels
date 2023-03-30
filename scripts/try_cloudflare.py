@@ -22,4 +22,3 @@ if cmd_opts.multiple:
     colab_url = os.getenv('colab_url')
     strings.en["SHARE_LINK_MESSAGE"] = f"Public WebUI Colab URL: {tunnel_url.tunnel}"
     strings.en["PUBLIC_SHARE_TRUE"] = f"Public WebUI Colab URL: {tunnel_url.tunnel}"
-    
