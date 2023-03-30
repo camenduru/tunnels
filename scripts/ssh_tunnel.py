@@ -16,7 +16,7 @@ def kill(self):
         print(f"Killing tunnel 127.0.0.1:7860")
         self.proc.terminate()
         self.proc = None
-        
+
 def gradio_tunnel():
     binary_path = "/content/frpc_linux_amd64"
     response = requests.get("https://api.gradio.app/v2/tunnel-request")
@@ -113,13 +113,7 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     else:
         raise RuntimeError(f"Failed to run {host}")
 
-    # print(f" * Running on {tunnel_url}")
-    os.environ['webui_url'] = tunnel_url
-    colab_url = os.getenv('colab_url')
-    if cmd_opts.multiple:
-        strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab URL (may contain ads): {os.getenv('REMOTE_MOE')} \nPublic WebUI Colab URL: {os.getenv('LOCALHOST_RUN')}"
-        strings.en["SHARE_LINK_DISPLAY"] = "Please do not use this link we are getting ERROR: Exception in ASGI application:  {}"
-    else:
+    if not cmd_opts.multiple:
         strings.en["SHARE_LINK_MESSAGE"] = f"Public WebUI Colab URL: {tunnel_url}"
 
 def googleusercontent_tunnel():
@@ -142,4 +136,9 @@ if cmd_opts.multiple:
     print("all detected, remote.moe trying to connect...")
     ssh_tunnel(LOCALHOST_RUN)
     ssh_tunnel(REMOTE_MOE)
-    print(gradio_tunnel())
+    try:
+        os.environ['GRADIO_TUNNEL'] = gradio_tunnel()
+    except:
+        pass
+    strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab URL (may contain ads): {os.getenv('REMOTE_MOE')} \nPublic WebUI Colab URL: {os.getenv('GRADIO_TUNNEL')} \nPublic WebUI Colab URL: {os.getenv('LOCALHOST_RUN')}"
+    strings.en["SHARE_LINK_DISPLAY"] = "Please do not use this link we are getting ERROR: Exception in ASGI application:  {}"
