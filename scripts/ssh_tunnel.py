@@ -23,7 +23,8 @@ def gen_key(path: Union[str, Path]) -> None:
     subprocess.run(args, check=True)
     path.chmod(0o600)
 
-def localhost_run_tunnel(host: str = LOCALHOST_RUN):
+
+def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     ssh_name = "id_rsa"
     ssh_path = Path(__file__).parent.parent / ssh_name
 
@@ -62,51 +63,7 @@ def localhost_run_tunnel(host: str = LOCALHOST_RUN):
         url_match = pattern.search(line)
         if url_match:
             tunnel_url = url_match.group("url")
-            return tunnel_url
-            break
-    else:
-        raise RuntimeError(f"Failed to run {host}")
-
-def remote_moe_tunnel(host: str = REMOTE_MOE):
-    ssh_name = "id_rsa"
-    ssh_path = Path(__file__).parent.parent / ssh_name
-
-    tmp = None
-    if not ssh_path.exists():
-        try:
-            gen_key(ssh_path)
-        # write permission error or etc
-        except subprocess.CalledProcessError:
-            tmp = TemporaryDirectory()
-            ssh_path = Path(tmp.name) / ssh_name
-            gen_key(ssh_path)
-
-    port = cmd_opts.port if cmd_opts.port else 7860
-
-    arg_string = f"ssh -R 80:127.0.0.1:{port} -o StrictHostKeyChecking=no -i {ssh_path.as_posix()} {host}"
-    args = shlex.split(arg_string)
-
-    tunnel = subprocess.Popen(
-        args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8"
-    )
-
-    atexit.register(tunnel.terminate)
-    if tmp is not None:
-        atexit.register(tmp.cleanup)
-
-    tunnel_url = ""
-    lines = 27 if host == LOCALHOST_RUN else 5
-    pattern = localhostrun_pattern if host == LOCALHOST_RUN else remotemoe_pattern
-
-    for _ in range(lines):
-        line = tunnel.stdout.readline()
-        if line.startswith("Warning"):
-            print(line, end="")
-
-        url_match = pattern.search(line)
-        if url_match:
-            tunnel_url = url_match.group("url")
-            return tunnel_url
+            print(tunnel_url)
             break
     else:
         raise RuntimeError(f"Failed to run {host}")
@@ -139,5 +96,4 @@ if cmd_opts.googleusercontent:
 if cmd_opts.multiple:
     print("all detected, remote.moe trying to connect...")
     ssh_tunnel(LOCALHOST_RUN)
-    print(remote_moe_tunnel())
-    print(localhost_run_tunnel())
+    ssh_tunnel(REMOTE_MOE)
