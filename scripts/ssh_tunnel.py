@@ -64,10 +64,8 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
         if url_match:
             tunnel_url = url_match.group("url")
             if lines == 27:
-                print(f"LOCALHOST_RUN: {tunnel_url}")
                 os.environ['LOCALHOST_RUN'] = tunnel_url
             else:
-                print(f"REMOTE_MOE: {tunnel_url}")
                 os.environ['REMOTE_MOE'] = tunnel_url
             break
     else:
@@ -77,7 +75,7 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     os.environ['webui_url'] = tunnel_url
     colab_url = os.getenv('colab_url')
     if cmd_opts.multiple:
-        strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab URL: {os.getenv('REMOTE_MOE')} \n Public WebUI Colab URL: {os.getenv('LOCALHOST_RUN')}"
+        strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab URL (may contain ads): {os.getenv('REMOTE_MOE')} \nPublic WebUI Colab URL: {os.getenv('LOCALHOST_RUN')}"
         strings.en["SHARE_LINK_DISPLAY"] = "Please do not use this link we are getting ERROR: Exception in ASGI application:  {}"
     else:
         strings.en["SHARE_LINK_MESSAGE"] = f"Public WebUI Colab URL: {tunnel_url}"
