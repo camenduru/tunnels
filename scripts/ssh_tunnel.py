@@ -6,9 +6,51 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Union
 from gradio import strings
-import os
+import os, requests, stat
 
 from modules.shared import cmd_opts
+
+#https://github.com/gradio-app/gradio/blob/main/gradio/tunneling.py modified
+def kill(self):
+    if self.proc is not None:
+        print(f"Killing tunnel 127.0.0.1:7860")
+        self.proc.terminate()
+        self.proc = None
+
+def gradio_tunnel():
+    binary_path = "/content/frpc_linux_amd64"
+    response = requests.get("https://api.gradio.app/v2/tunnel-request")
+    if response and response.status_code == 200:
+        try:
+            payload = response.json()[0]
+            remote_host, remote_port = payload["host"], int(payload["port"])
+            resp = requests.get("https://cdn-media.huggingface.co/frpc-gradio-0.1/frpc_linux_amd64")
+            with open(binary_path, "wb") as file:
+                file.write(resp.content)
+            st = os.stat(binary_path)
+            os.chmod(binary_path, st.st_mode | stat.S_IEXEC)
+            command = [binary_path,"http","-n","random","-l","7860","-i","127.0.0.1","--uc","--sd","random","--ue","--server_addr",f"{remote_host}:{remote_port}","--disable_log_color",]
+            proc = subprocess.Popen(
+                command, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            )
+            atexit.register(kill)
+            url = ""
+            while url == "":
+                if proc.stdout is None:
+                    continue
+                line = proc.stdout.readline()
+                line = line.decode("utf-8")
+                if "start proxy success" in line:
+                    result = re.search("start proxy success: (.+)\n", line)
+                    if result is None:
+                        raise ValueError("Could not create share URL")
+                    else:
+                        url = result.group(1)
+            return url
+        except Exception as e:
+            raise RuntimeError(str(e))
+    else:
+        raise RuntimeError("Could not get share link from Gradio API Server.")
 
 LOCALHOST_RUN = "localhost.run"
 REMOTE_MOE = "remote.moe"
@@ -71,13 +113,7 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     else:
         raise RuntimeError(f"Failed to run {host}")
 
-    # print(f" * Running on {tunnel_url}")
-    os.environ['webui_url'] = tunnel_url
-    colab_url = os.getenv('colab_url')
-    if cmd_opts.multiple:
-        strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab URL (may contain ads): {os.getenv('REMOTE_MOE')} \nPublic WebUI Colab URL: {os.getenv('LOCALHOST_RUN')}"
-        strings.en["SHARE_LINK_DISPLAY"] = "Please do not use this link we are getting ERROR: Exception in ASGI application:  {}"
-    else:
+    if not cmd_opts.multiple:
         strings.en["SHARE_LINK_MESSAGE"] = f"Public WebUI Colab URL: {tunnel_url}"
 
 def googleusercontent_tunnel():
@@ -100,3 +136,9 @@ if cmd_opts.multiple:
     print("all detected, remote.moe trying to connect...")
     ssh_tunnel(LOCALHOST_RUN)
     ssh_tunnel(REMOTE_MOE)
+    try:
+        os.environ['GRADIO_TUNNEL'] = gradio_tunnel()
+    except:
+        pass
+    strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab URL (may contain ads): {os.getenv('REMOTE_MOE')} \nPublic WebUI Colab URL: {os.getenv('GRADIO_TUNNEL')} \nPublic WebUI Colab URL: {os.getenv('LOCALHOST_RUN')}"
+    strings.en["SHARE_LINK_DISPLAY"] = "Please do not use this link we are getting ERROR: Exception in ASGI application:  {}"

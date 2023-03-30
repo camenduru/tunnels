@@ -25,7 +25,7 @@ def preload(parser: argparse.ArgumentParser):
         action="store_true",
         help="use googleusercontent.com, alternative to gradio --share",
     )
-    
+
     parser.add_argument(
         "--multiple",
         action="store_true",
