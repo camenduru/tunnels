@@ -140,5 +140,5 @@ if cmd_opts.multiple:
         os.environ['GRADIO_TUNNEL'] = gradio_tunnel()
     except:
         pass
-    strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab URL (may contain ads): {os.getenv('REMOTE_MOE')} \nPublic WebUI Colab URL: {os.getenv('GRADIO_TUNNEL')} \nPublic WebUI Colab URL: {os.getenv('LOCALHOST_RUN')}"
+    strings.en["RUNNING_LOCALLY_SEPARATED"] = f"Public WebUI Colab URL: {os.getenv('REMOTE_MOE')} \nPublic WebUI Colab URL: {os.getenv('GRADIO_TUNNEL')} \nPublic WebUI Colab URL: {os.getenv('LOCALHOST_RUN')}"
     strings.en["SHARE_LINK_DISPLAY"] = "Please do not use this link we are getting ERROR: Exception in ASGI application:  {}"
