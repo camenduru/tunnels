@@ -134,8 +134,14 @@ if cmd_opts.googleusercontent:
 
 if cmd_opts.multiple:
     print("all detected, remote.moe trying to connect...")
-    ssh_tunnel(LOCALHOST_RUN)
-    # ssh_tunnel(REMOTE_MOE)
+    try:
+        ssh_tunnel(LOCALHOST_RUN)
+    except:
+        pass
+    try:
+        ssh_tunnel(REMOTE_MOE)
+    except:
+        pass
     try:
         os.environ['GRADIO_TUNNEL'] = gradio_tunnel()
     except:
