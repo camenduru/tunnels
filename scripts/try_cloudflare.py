@@ -13,6 +13,7 @@ if cmd_opts.cloudflared:
     os.environ['webui_url'] = tunnel_url.tunnel
     colab_url = os.getenv('colab_url')
     strings.en["SHARE_LINK_MESSAGE"] = f"Public WebUI Colab URL: {tunnel_url.tunnel}"
+    strings.en["PUBLIC_SHARE_TRUE"] = f"Public WebUI Colab URL: {tunnel_url.tunnel}"
     
 if cmd_opts.multiple:
     print("all detected, cloudflared trying to connect...")
