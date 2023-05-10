@@ -138,10 +138,10 @@ if cmd_opts.multiple:
         ssh_tunnel(LOCALHOST_RUN)
     except:
         pass
-    try:
-        ssh_tunnel(REMOTE_MOE)
-    except:
-        pass
+    # try:
+    #     ssh_tunnel(REMOTE_MOE)
+    # except:
+    #     pass
     try:
         os.environ['GRADIO_TUNNEL'] = gradio_tunnel()
     except:
