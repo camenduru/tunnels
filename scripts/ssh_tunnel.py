@@ -18,7 +18,8 @@ def kill(self):
         self.proc = None
 
 def gradio_tunnel():
-    binary_path = "/content/frpc_linux_amd64"
+    script_path = os.path.dirname(os.path.abspath(__file__))
+    binary_path = os.path.join(script_path, "frpc_linux_amd64")
     response = requests.get("https://api.gradio.app/v2/tunnel-request")
     if response and response.status_code == 200:
         try:
